@@ -1,0 +1,67 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# def zhexian():
+
+def t1():
+    df = pd.read_csv('gmjj/CPGI.csv')
+    df = df.reindex(index=df.index[::-1])
+    l = range(2005,2023)
+    lab = []
+    for i in l:
+        df1 = df[df['Month'].str.contains(str(i))]
+        print(df1)
+        # plt.plot(range(1,len(df1)+1),df1['CPGI'])
+        lab.append(str(i))
+        half = 2010
+        half2=2017#币值稳定状况的价格指数指标
+        if i < half:
+            plt.figure('第一个图片币值稳定状况')
+            plt.plot(range(1,len(df1)+1), df1['CPGI'],label=str(i))
+            plt.legend()
+        else:
+            if i>half and i<half2:
+                plt.figure('第二个图片币值稳定状况')
+                plt.plot(range(1,len(df1)+1), df1['CPGI'],label=str(i))
+                plt.legend()
+            else:
+                plt.figure('第三个图片币值稳定状况')
+                plt.plot(range(1, len(df1) + 1), df1['CPGI'], label=str(i))
+                plt.legend()
+
+    # plt.legend(lab, loc='upper right', bbox_to_anchor=(1.2, 1))
+    plt.show()
+
+def t2():
+    df = pd.read_csv('gmjj/RSCG.csv')
+    df = df.reindex(index=df.index[::-1])
+    l = range(2008,2022)
+    lab = []
+    for i in l:
+        df1 = df[df['Month'].str.contains(str(i))]
+        print(df1)
+        df1['Total_YOY'] = df[u'Total_YOY'].str.strip('%').astype(float)
+        # plt.plot(range(1,len(df1)+1),df1['CPGI'])
+        lab.append(str(i))
+        half = 2015
+        half2=2017#中国社会消费品零售总额增长率数据
+        if i < half:
+            plt.figure('第一个图片中国社会消费品零售总额增长率数据')
+            plt.plot(range(1,len(df1)+1), df1['Total_YOY'],label=str(i))
+            plt.legend()
+        else:
+            # if i>half and i<half2:
+            #     plt.figure('第二个图片中国社会消费品零售总额数据')
+            #     plt.plot(range(1,len(df1)+1), df1['Total_YOY'],label=str(i))
+            #     plt.legend()
+            # else:
+                plt.figure('第三个图片中国社会消费品零售总额增长率数据')
+                plt.plot(range(1, len(df1) + 1), df1['Total_YOY'], label=str(i))
+                plt.legend()
+
+    # plt.legend(lab, loc='upper right', bbox_to_anchor=(1.2, 1))
+    plt.show()
+def main():
+    # t1()
+    t2()
+main()
