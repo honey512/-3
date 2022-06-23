@@ -135,7 +135,9 @@ def t3():
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from jieba.analyse import extract_tags
-from pyecharts import WordCloud
+from pyecharts import WordCloud, Bar
+
+
 def t4():
     mask = imageio.imread(r"ditu.png")  # 用于最后图像图形
 
@@ -151,9 +153,89 @@ def t4():
     wordcloud = WordCloud(width=1300, height=620)
     wordcloud.add("", first, snd, word_size_range=[20, 100])
     wordcloud.render('关键词.html')
+def t5():
+    df = pd.read_csv('test.csv')
+    df['fan_num'] = df['fan_num'].map(lambda x: x * 100)
+    name_list = list(set(df.name))
+
+    attr = [202001, 202002, 202003, 202004, 202005, 202006, 202007, 202008, 202009, 202010, 202011, 202012, 202101,
+              202102, 202103, 202104, 202105, 202106, 202107, 202108, 202109]
+    df2 = df[df['name']=='疫情']
+    v1 = []
+    v2 = []
+    for i in attr:
+        if len(df2[df2['year']==i])!=0:
+            print()
+            v1.append(df2[df2['year']==i]['fan_num'].tolist()[0])
+        else:
+            v1.append(0)
+    df3 = df[df['name'] == '接种']
+
+    for i in attr:
+        if len(df3[df3['year'] == i]) != 0:
+            v2.append(df3[df3['year'] == i]['fan_num'].tolist()[0])
+        else:
+            v2.append(0)
+    bar = Bar("政策关键词在当月权重")
+    bar.add("疫情", attr, v1, mark_point=["average"])
+    bar.add("接种", attr, v2, mark_line=["min", "max"])
+
+    bar.render('政策变化.html')
+import numpy as np
+
+def t6():
+   pd.options.display.max_columns = None
+   df = pd.read_csv('owid-covid-data.csv')
+   df = df[df['people_fully_vaccinated'].notnull()]
+   df = df[df['date'].notnull()]
+   # df['Year'] = df['date'].dt.year
+   # df['Month'] = df['date'].dt.month
+
+   df['year'] = pd.DatetimeIndex(df['date']).year
+   df['month'] = pd.DatetimeIndex(df['date']).month
+   df['month'] = df['month'].apply(lambda x:str(x).zfill(2))
+   # df['data2'] = pd.to_datetime(df['data'],format='%Y%M')
+   df['data2'] = df['year'].astype(str)+df['month']
+   df2 = df[['data2','people_fully_vaccinated']].groupby('data2').agg(sum)
+   df3 = df[['data2', 'total_cases']].groupby('data2').agg(sum)
+   l = df2.index.tolist()
+   y = (df2['people_fully_vaccinated']).tolist()
+   y2 = (df3['total_cases']).tolist()
+   from pyecharts import Line
+   attr = l
+   v1 = y
+   v2 = y2
+
+   line = Line("折线图示例")
+   line.add(
+       "疫苗人数",
+       attr,
+       v1,
+       mark_point=["max", "min"],
+       mark_line=["average"],
+   )
+   line.add(
+       "确证人数",
+       attr,
+       v2,
+       mark_point=["max", "min"],
+       mark_line=["average"],
+       yaxis_formatter="°C",
+   )
+   line.render('疫苗接种人数.html')
+
+   #
+   # line = Line("折线图示例")
+   # line.add("商家A", attr, v1, is_stack=True, is_label_show=True)
+   # line2 = Line()
+   # line2.add("商家b", attr, v2, is_stack=True, is_label_show=True)
+   # line.overlap(line2)
+   # line.render('疫苗接种人数.html')
+   # print(l,y)
+
 
 def main():
     # t1()
     # t2()
-    t4()
+    t6()
 main()
