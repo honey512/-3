@@ -1,0 +1,282 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Echarts</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.1/echarts.min.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 700px;height:700px;"></div>
+    <script type="text/javascript">
+       $(function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+            $.ajax({
+                url:'/getdata',
+                success:function (data) {
+                    json_data=JSON.parse(data)
+
+                    console.info(json_data['countries'])
+                    console.info(json_data['portion'])
+
+                    // 指定图表的配置项和数据
+
+var colorList = [  '#bcd3bb', '#edc1a5', '#9dc5c8', '#e1e8c8',
+'#1e90ff', '#ff6347', '#da70d6',
+        '#ff7f50', '#87cefa', '#7b68ee', '#32cd32', '#6495ed',
+         '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0','#928ea8', '#bda29a',
+
+       '#7b7c68', '#e5b5b5', '#f0b489',
+        '#ccd3bb', '#f88f70', '#fdc1a5', '#adc5c8', '#f1e8c8', '#8b7c68', '#f5b5b5', '#00b489', '#a28ea8', '#cda29a',
+        '#dcd3bb', '#088f70', '#1dc1a5', '#bdc5c8', '#01e8c8', '#9b7c68', '#05b5b5', '#10b489', '#b28ea8', '#dda29a'
+    ],
+    option = {
+        // 图表标题
+        title: {
+            show: true, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
+            text: '极端贫困人口比例', //主标题文本，'\n'指定换行
+            x: 'center', // 水平安放位置，默认为左对齐，可选为：
+            y: '10%', // 垂直安放位置，默认为全图顶端，可选为：
+
+            backgroundColor: 'rgba(0,0,0,0)',
+            borderColor: '#ccc', // 标题边框颜色
+            borderWidth: 0, // 标题边框线宽，单位px，默认为0（无边框）
+            padding: 5, // 标题内边距，单位px，默认各方向内边距为5，                   // 接受数组分别设定上右下左边距，同css
+            itemGap: 10, // 主副标题纵向间隔，单位px，默认为10，
+            textStyle: {
+                fontSize: 18,
+                fontWeight: 'bolder',
+                color: '#333' // 主标题文字颜色
+            },
+            subtextStyle: {
+                color: '#aaa' // 副标题文字颜色
+            }
+        },
+        backgroundColor: '#fff',
+        tooltip: {},
+        animationDurationUpdate: function(idx) {
+            // 越往后的数据延迟越大
+            return idx * 100;
+        },
+        animationEasingUpdate: 'bounceIn',
+        series: [{
+            type: 'graph',
+            layout: 'force',
+            force: {
+                repulsion: 181,
+                edgeLength: 10
+            },
+            roam: true,
+            label: {
+                show: true,
+                formatter: [
+                    '{title|{c}}',
+                    '{name|{b}}'
+                ].join('\n'),
+                rich: {
+                    name: {
+                            fontSize: 14,
+                            color: '#fff',
+                            textAlign: 'center'
+                        },
+                    title: {
+                        fontSize: 12,
+                        color: '#fff',
+                        textAlign: 'center'
+                    },
+
+                }
+            },
+            data: [{
+                "name": json_data['countries'][0],
+                "value": json_data['portion'][0],
+                "symbolSize": 70, //设置圈圈的大小
+                "draggable": true, //是否可拖拽
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[0],
+                        "color": colorList[0]
+
+                    }
+                }
+            }, {
+                "name": json_data['countries'][1],
+                "value": json_data['portion'][1],
+                "symbolSize": 60,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[1],
+                        "color": colorList[1]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][2],
+                "value": json_data['portion'][2],
+                "symbolSize": 55,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[2],
+                        "color": colorList[2]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][3],
+                "value": json_data['portion'][3],
+                "symbolSize": 55,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[3],
+                        "color": colorList[3]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][4],
+                "value": json_data['portion'][4],
+                "symbolSize": 50,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[4],
+                        "color": colorList[4]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][5],
+                "value": json_data['portion'][5],
+                "symbolSize": 57,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[5],
+                        "color": colorList[5]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][6],
+                "value": json_data['portion'][6],
+                "symbolSize": 50,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[6],
+                        "color": colorList[6]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][7],
+                "value": json_data['portion'][7],
+                "symbolSize": 102,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[7],
+                        "color": colorList[7]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][8],
+                "value": json_data['portion'][8],
+                "symbolSize": 50,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[8],
+                        "color": colorList[8]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][9],
+                "value": json_data['portion'][9],
+                "symbolSize": 76,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[9],
+                        "color": colorList[9]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][10],
+                "value": json_data['portion'][10],
+                "symbolSize": 95,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[10],
+                        "color": colorList[10]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][11],
+                "value": json_data['portion'][11],
+                "symbolSize": 82,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[11],
+                        "color": colorList[11]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][12],
+                "value": json_data['portion'][12],
+                "symbolSize": 105,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[12],
+                        "color": colorList[12]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][13],
+                "value": json_data['portion'][13],
+                "symbolSize": 115,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[13],
+                        "color": colorList[13]
+                    }
+                }
+            }, {
+                "name": json_data['countries'][14],
+                "value": json_data['portion'][14],
+                "symbolSize": 120,
+                "draggable": true,
+                "itemStyle": {
+                    "normal": {
+                        "shadowBlur": 100,
+                        "shadowColor": colorList[14],
+                        "color": colorList[14]
+                    }
+                }
+            }]
+        }]
+    }
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+
+                }
+            })
+        })
+    </script>
+</body>
