@@ -1,0 +1,199 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Echarts</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.1/echarts.min.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 700px;height:700px;"></div>
+    <script type="text/javascript">
+       $(function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+            $.ajax({
+                url:'/getdata',
+                success:function (data) {
+                    json_data=JSON.parse(data)
+
+                    console.info(json_data['countries'])
+                    console.info(json_data['death'])
+                    console.info(json_data['total'])
+                    console.info(json_data['hospital'])
+
+                    // 指定图表的配置项和数据
+
+var xData = (function () {
+  var data = ['11.29', '11.30', '12.01', '12.02', '12.03','12.04','12.05','12.06','12.07'];
+  return data;
+})();
+
+option = {
+  backgroundColor: '#fff',
+  legend: {
+    // data: ['部署失败', '成功', '测试失败', '发布数'],
+    data: ['确诊人数', '死亡人数', '病床数'],
+    left: 'center',
+    top: 30,
+    itemWidth: 16.7,
+    itemHeight: 7.6,
+    type: 'plain',
+
+  },
+  tooltip: {
+    trigger: 'axis',
+  },
+  grid: {
+    borderWidth: 0,
+    top: 100,
+    bottom: 80,
+    left: 55,
+    right: 25,
+    textStyle: {
+      color: '#fff',
+    },
+  },
+  calculable: true,
+  xAxis: [
+    {
+      type: 'category',
+      splitLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      splitArea: {
+        show: false,
+      },
+      data: json_data['countries'],
+      axisLabel: {
+        interval: 0,
+        rotate:40
+      },
+    },
+  ],
+  yAxis: [
+    {
+      nameTextStyle: {
+        color: '#FDFDFD',
+        padding: [0, 0, 0, -50],
+      },
+      nameGap: 15,
+      type: 'value',
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: 'dashed',
+          color: 'RGBA(3, 75, 97, 0.4)',
+        },
+      },
+      axisLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      splitArea: {
+        show: false,
+      },
+    },{
+            type: 'value',
+            name: '(/1000)',
+            nameTextStyle: {
+                color: '#d2d2d2',
+            },
+            scale: true,
+            position: 'right',
+
+            splitLine: {
+                show: false,
+            },
+        },
+  ],
+  series: [
+    {
+      name: '确诊人数',
+      type: 'bar',
+      stack: '1',
+      barMaxWidth: 18,
+      barCategoryGap: '50%',
+      itemStyle: {
+        normal: {
+          barBorderRadius: 5,
+          // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          //         {
+          //             offset: 1,
+          //             color: '#baf1a4',
+          //         },
+          //         {
+          //             offset: 0,
+          //             color: '#1ad430',
+          //         },
+          //     ]),
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: '#956FD4' },
+            { offset: 1, color: '#3EACE5' },
+          ]),
+        },
+      },
+      label: {
+        show: true,
+        position: 'inside',
+        distance: 10,
+        color: '#000',
+        fontSize: '10px',
+      },
+      data: json_data['total'],
+    },
+    {
+      name: '病床数',
+      type: 'line',
+      yAxisIndex: 1,
+      symbolSize: 3,
+      symbol: 'emptyCircle',
+      itemStyle: {
+        normal: {
+          color: '#FFC130',
+          barBorderRadius: '100%',
+        },
+        borderWidth: 0,
+      },
+      smooth: true,
+      lineStyle: {
+        normal: {
+          width: 2,
+          color: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              {
+                offset: 0,
+                color: '#FF8B77', // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: '#FE6AAC', // 100% 处的颜色
+              },
+            ],
+            global: false, // 缺省为 false
+          },
+        },
+      },
+      data: json_data['hospital'],
+    },
+  ],
+};
+
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+
+                }
+            })
+        })
+    </script>
+</body>
